@@ -2,6 +2,9 @@
 
 单人对战三个 AI 的四川麻将（血战到底）。纯前端 H5，打开浏览器就能玩，可部署到 GitHub Pages + Cloudflare。
 
+**在线试玩**：https://to-g.github.io/mahjong-ai/
+**仓库地址**：https://github.com/To-G/mahjong-ai
+
 ---
 
 ## 一、架构决策：为什么大模型不负责出牌
@@ -66,24 +69,37 @@ python serve.py            # 或： npx serve .
 
 ## 四、部署
 
-### 1. GitHub Pages（前端）
+### 1. GitHub Pages（前端）— ✅ 已部署
+
+- 仓库：https://github.com/To-G/mahjong-ai
+- 在线地址：https://to-g.github.io/mahjong-ai/
+- 源码分支 `main`、根目录 `/`，Pages 已开启（`build_type: legacy`），构建状态 `built`
+- 关键资源已验证可访问：`/`、`/js/ui.js`、`/js/engine.js`、`/css/style.css` 全部 HTTP 200
+
+若要在别的账号重新部署：
 
 ```bash
 cd mahjong
-git init
-git add .
-git commit -m "feat: 四川麻将血战到底 AI 版"
+git init && git add . && git commit -m "feat: 四川麻将血战到底 AI 版"
 git branch -M main
 git remote add origin https://github.com/<你的账号>/<仓库名>.git
 git push -u origin main
 ```
 
-然后：仓库 **Settings → Pages → Source 选 `main` / 根目录 `/`** → Save，等一两分钟就有 `https://<账号>.github.io/<仓库名>/`。
+然后：仓库 **Settings → Pages → Source 选 `main` / 根目录 `/`** → Save。
 
 > ⚠️ 提交前务必确认 `git status` 里**没有** `worker/.dev.vars`，那里面是 API Key。
 > 已加入 `.gitignore`，可以用 `git check-ignore -v worker/.dev.vars` 验证。
 
-### 2. Cloudflare Worker（AI 代理，必须先做）
+> 🌐 **中国大陆网络注意**：本机直连 `github.com`（TCP 443）会超时，`api.github.com` 正常。
+> 所有 GitHub 命令都需要挂代理：`export HTTPS_PROXY=http://127.0.0.1:7890`，
+> 且 git 需配 `git config http.proxy http://127.0.0.1:7890`（本仓库已配置）。
+> `gh auth login --web` 不带代理会卡在 `POST https://github.com/login/device/code` 失败。
+
+### 2. Cloudflare Worker（AI 代理）— ⏳ 待部署
+
+> 这一步是**可选的增强**：不做也能玩，只是 AI 无法临场发挥，只用内置台词库。
+> 本机没有 Cloudflare 凭据（无 `.wrangler` 配置、无 `CLOUDFLARE_*` 环境变量），需要先授权。
 
 **为什么必须有它**：DeepSeek 的 Key 一旦写进前端代码并推到 GitHub，会被自动扫描机器人在几分钟内盗刷。
 Worker 的作用是把 Key 藏在服务端，前端只见一个 Worker 地址。
@@ -92,12 +108,20 @@ Worker 的作用是把 Key 藏在服务端，前端只见一个 Worker 地址。
 cd worker
 npm i -D wrangler                       # 或用 npx wrangler
 
-wrangler login                          # 第一次会打开浏览器授权
+wrangler login                          # 第一次会打开浏览器授权（点一次 Allow）
 
 wrangler secret put DEEPSEEK_API_KEY    # 粘贴你的 key（加密存储，看不到也拉不回来）
 # 可选：wrangler secret put PROXY_TOKEN  # 给代理加一道口令
 
 wrangler deploy                         # 部署完会给出 https://mahjong-ai-proxy.<子域>.workers.dev
+```
+
+若不想走浏览器授权，也可以用 API Token（Dash → My Profile → API Tokens → 
+模板选 **Edit Cloudflare Workers**），然后：
+
+```bash
+export CLOUDFLARE_API_TOKEN=<你的 token>
+wrangler deploy
 ```
 
 验证一下：
