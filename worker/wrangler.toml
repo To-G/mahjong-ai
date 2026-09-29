@@ -1,0 +1,24 @@
+# ==========================================================
+#  Cloudflare Worker 配置
+#  部署前把 name 改成你自己的（会决定最终的 xxx.workers.dev 域名）
+# ==========================================================
+
+name = "mahjong-ai-proxy"
+main = "src/index.js"
+compatibility_date = "2025-01-01"
+
+# 可选：自定义路由/域名。先在 Cloudflare 面板接入域名后再启用。
+# routes = [
+#   { pattern = "mahjong-ai.yourdomain.com/*", custom_domain = true }
+# ]
+
+[vars]
+# 这里只放非敏感配置。真正的 DeepSeek Key 用 wrangler secret 写入：
+#   wrangler secret put DEEPSEEK_API_KEY
+MODEL = "deepseek-chat"
+# PROXY_TOKEN 建议也用 secret 方式写入：
+#   wrangler secret put PROXY_TOKEN
+# 留空则不做口令校验（本地自用可以，公开部署强烈建议设置）
+
+# 本地开发时读取 .dev.vars 里的环境变量
+# .dev.vars 已经被 .gitignore 忽略，不会被提交到 GitHub

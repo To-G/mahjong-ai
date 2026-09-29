@@ -1,0 +1,18 @@
+# Node
+node_modules/
+.workbuddy/
+
+# Cloudflare Worker
+worker/.wrangler/
+worker/dist/
+.wrangler/
+# ⚠️ 这个文件存 DeepSeek Key，绝对不能进仓库
+.dev.vars
+worker/.dev.vars
+
+# 本地编辑器 & 系统
+.DS_Store
+Thumbs.db
+*.log
+.idea/
+.vscode/

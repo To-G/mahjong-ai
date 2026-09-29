@@ -1,0 +1,9 @@
+# 本地 Worker 调试用的环境变量（示例）
+# 用法：cp .dev.vars.example .dev.vars，然后把下面的值换成你自己的 key
+# ⚠️ 只有 .dev.vars 会被 .gitignore 忽略。不要把真实 key 写进这个 .example 文件。
+
+# DeepSeek 开放平台申请的 API Key
+DEEPSEEK_API_KEY=sk-在这里填你的key
+
+# 可选：给代理加一道口令，前端必须带同样的 Bearer token 才能调用
+# PROXY_TOKEN=my-secret-word

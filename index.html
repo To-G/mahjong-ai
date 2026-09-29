@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>血战到底 · AI 麻将</title>
+  <meta name="description" content="四川麻将血战到底，内置强 AI，可接 DeepSeek 大模型陪你聊天打牌" />
+  <link rel="stylesheet" href="./css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🀄</text></svg>" />
+</head>
+<body>
+  <div id="game"></div>
+  <noscript>需要开启 JavaScript 才能运行。</noscript>
+  <script type="module">
+    import { boot } from './js/ui.js';
+    // 挂到 window 方便在控制台调试：__ui.game
+    window.__ui = boot('#game');
+  </script>
+</body>
+</html>
